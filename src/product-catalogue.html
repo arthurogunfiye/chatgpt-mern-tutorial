@@ -1,0 +1,438 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <link rel="shortcut icon" href="data:," type="image/x-icon" />
+    <title>Products Catalog</title>
+    <script type="module" src="./js/app.js"></script>
+  </head>
+
+  <body id="top">
+    <!-- NAVIGATION -->
+    <div class="site-navigation">
+      <div class="mobile-header">
+        <a href="#top" class="logo">MyStore</a>
+
+        <details class="mobile-menu">
+          <summary>Menu</summary>
+
+          <nav aria-label="Mobile navigation">
+            <ul>
+              <li><a href="#top">Home</a></li>
+              <li><a href="#products">Products</a></li>
+              <li><a href="#categories">Categories</a></li>
+              <li><a href="#specs">Specifications</a></li>
+              <li><a href="#comparison">Comparison</a></li>
+              <li><a href="#about">About</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </nav>
+        </details>
+
+        <div class="mobile-cart">
+          <span id="mobile-cart-count" role="status" aria-live="polite">
+            Cart: 0
+          </span>
+          <button type="button" class="reset-cart">Reset Cart</button>
+        </div>
+      </div>
+
+      <div class="desktop-navigation">
+        <nav id="main-nav" aria-label="Main navigation">
+          <a href="#top" class="logo">MyStore</a>
+
+          <ul>
+            <li><a href="#top">Home</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li>
+              <span id="cart-count" role="status" aria-live="polite"
+                >Cart: 0</span
+              >
+            </li>
+            <li>
+              <button type="button" class="reset-cart">Reset Cart</button>
+            </li>
+          </ul>
+        </nav>
+
+        <nav id="secondary-nav" aria-label="Product navigation">
+          <ul>
+            <li><a href="#categories">Product Categories</a></li>
+            <li><a href="#products">Products</a></li>
+            <li><a href="#specs">Product Specs</a></li>
+            <li><a href="#comparison">Product Comparison</a></li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+
+    <!-- HEADER -->
+    <header class="container site-header">
+      <h1>MyStore</h1>
+      <p>The one-stop destination for all your shopping needs.</p>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="container">
+      <!-- PRODUCT CATEGORIES -->
+      <section id="categories">
+        <h2 class="section-title">Product Categories</h2>
+        <ul>
+          <li>Smartphones</li>
+          <li>Laptops</li>
+          <li>Tablets</li>
+          <li>Accessories</li>
+        </ul>
+      </section>
+
+      <!-- PRODUCTS -->
+      <section id="products">
+        <h2 class="section-title">Products</h2>
+        <div class="products-list">
+          <article id="samsung-product" class="product-card">
+            <span class="sale-badge">SALE</span>
+            <h3 class="product-title">Samsung Galaxy S24</h3>
+            <div class="product-image">
+              <img
+                src="./images/samsung-galaxy.webp"
+                alt="Samsung Galaxy Phone"
+                width="200"
+                height="200"
+                loading="lazy"
+              />
+            </div>
+            <p class="product-description">
+              Samsung Galaxy Smartphone with 256GB storage, a high-resolution
+              display and advanced camera features.
+            </p>
+            <p class="product-price">£899</p>
+            <a
+              href="#details"
+              class="product-link"
+              aria-label="Link to Samsung Galaxy Smartphone"
+              >View Product</a
+            >
+            <button type="button" class="add-to-cart" data-product-id="101">
+              Add To Cart
+            </button>
+          </article>
+          <article id="hp-laptop" class="product-card">
+            <h3 class="product-title">HP Laptop</h3>
+            <div class="product-image">
+              <img
+                src="./images/HP-Laptop.jpg"
+                alt="HP laptop"
+                width="200"
+                height="200"
+                loading="lazy"
+              />
+            </div>
+            <p class="product-description">
+              A powerful workstation designed to meet your everyday needs.
+            </p>
+            <p class="product-price">£749</p>
+            <a
+              href="#details"
+              class="product-link"
+              aria-label="Link to HP Laptop"
+              >View Product</a
+            >
+            <button type="button" class="add-to-cart" data-product-id="102">
+              Add To Cart
+            </button>
+          </article>
+          <article id="apple-ipad" class="product-card">
+            <h3 class="product-title">Apple iPad</h3>
+            <div class="product-image">
+              <img
+                src="./images/apple-ipad.webp"
+                alt="Apple iPad"
+                width="200"
+                height="200"
+                loading="lazy"
+              />
+            </div>
+            <p class="product-description">
+              Portable, powerful and intuitive tablet with many useful features
+              added to help organise your day.
+            </p>
+            <p class="product-price">£599</p>
+            <a
+              href="#details"
+              class="product-link"
+              aria-label="Link to Apple iPad"
+              >View Product</a
+            >
+            <button type="button" class="add-to-cart" data-product-id="103">
+              Add To Cart
+            </button>
+          </article>
+          <article id="ear-bud" class="product-card">
+            <h3 class="product-title">Galaxy Ear Buds</h3>
+            <div class="product-image">
+              <img
+                src="./images/samsung-galaxy-ear-buds-pro.jpg"
+                alt="Samsung Galaxy Ear Buds"
+                width="200"
+                height="200"
+                loading="lazy"
+              />
+            </div>
+            <p class="product-description">
+              Samsung Galaxy Ear Buds for maximum listening enjoyment and
+              noise-cancelling feature.
+            </p>
+            <p class="product-price">£199</p>
+            <a
+              href="#details"
+              class="product-link"
+              aria-label="Link to Galaxy Ear Buds"
+              >View Product</a
+            >
+            <button type="button" class="add-to-cart" data-product-id="104">
+              Add To Cart
+            </button>
+          </article>
+          <article id="apple-iphone" class="product-card">
+            <span class="sale-badge">SALE</span>
+            <h3 class="product-title">Apple iPhone 18 Pro Max</h3>
+            <div class="product-image">
+              <img
+                src="./images/apple-iphone-18-pro-max.jpg"
+                alt="Apple iPhone 18 Pro Max"
+                width="200"
+                height="200"
+                loading="lazy"
+              />
+            </div>
+            <p class="product-description">
+              Apple iPhone 18 Pro Max with 256GB storage, a high-resolution
+              display and advanced camera features.
+            </p>
+            <p class="product-price">£999</p>
+            <a
+              href="#details"
+              class="product-link"
+              aria-label="Link to Apple iPhone 18 Pro Max"
+              >View Product</a
+            >
+            <button type="button" class="add-to-cart" data-product-id="105">
+              Add To Cart
+            </button>
+          </article>
+          <article id="dell-laptop" class="product-card">
+            <h3 class="product-title">Dell Latitude 5440 Laptop</h3>
+            <div class="product-image">
+              <img
+                src="./images/dell-latitude-5440.jpg"
+                alt="Dell Latitude 5440 laptop"
+                width="200"
+                height="200"
+                loading="lazy"
+              />
+            </div>
+            <p class="product-description">
+              A powerful workstation designed to meet your everyday needs.
+            </p>
+            <p class="product-price">£789</p>
+            <a
+              href="#details"
+              class="product-link"
+              aria-label="Link to Dell Latitutde 5440 Laptop"
+              >View Product</a
+            >
+            <button
+              type="button"
+              class="add-to-cart"
+              data-product-id="106"
+              disabled
+            >
+              Add To Cart
+            </button>
+          </article>
+          <article id="google-pixel" class="product-card">
+            <span class="sale-badge">SALE</span>
+            <h3 class="product-title">Google Pixel Tablet</h3>
+            <div class="product-image">
+              <img
+                src="./images/google-pixel-tablet.webp"
+                alt="Google Pixel Tablet"
+                width="200"
+                height="200"
+                loading="lazy"
+              />
+            </div>
+            <p class="product-description">
+              Portable, powerful and intuitive tablet with many useful features
+              added to help organise your day.
+            </p>
+            <p class="product-price">£329</p>
+            <a
+              href="#details"
+              class="product-link"
+              aria-label="Link to Google Pixel Tablet"
+              >View Product</a
+            >
+            <button type="button" class="add-to-cart" data-product-id="107">
+              Add To Cart
+            </button>
+          </article>
+          <article id="bose-headphones" class="product-card">
+            <h3 class="product-title">Bose Headphones</h3>
+            <div class="product-image">
+              <img
+                src="./images/bose-headphones.webp"
+                alt="Bose Headphones"
+                width="200"
+                height="200"
+                loading="lazy"
+              />
+            </div>
+            <p class="product-description">
+              Bose Headphones for best-in-class maximum listening enjoyment and
+              noise-cancelling feature.
+            </p>
+            <p class="product-price">£299</p>
+            <a
+              href="#details"
+              class="product-link"
+              aria-label="Link to Bose Headphones"
+              >View Product</a
+            >
+            <button
+              type="button"
+              class="add-to-cart"
+              data-product-id="108"
+              disabled
+            >
+              Add To Cart
+            </button>
+          </article>
+        </div>
+      </section>
+
+      <!-- PRODUCT SPECIFICATIONS -->
+      <section id="specs">
+        <h2 class="section-title">Product Specifications</h2>
+        <dl>
+          <dt>Brand</dt>
+          <dd>Samsung</dd>
+          <dt>Colour</dt>
+          <dd>Black</dd>
+          <dt>Storage</dt>
+          <dd>256GB</dd>
+          <dt>Warranty</dt>
+          <dd>1 year</dd>
+        </dl>
+      </section>
+
+      <!-- PRODUCT COMPARISON -->
+      <section id="comparison">
+        <h2 class="section-title">Products Comparison</h2>
+        <div class="table-wrapper">
+          <table>
+            <caption>
+              Comparing Products
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Product Name</th>
+                <th scope="col">Category</th>
+                <th scope="col">Price</th>
+                <th scope="col">Availability</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Samsung Galaxy Smartphone</td>
+                <td>Smartphones</td>
+                <td>£899</td>
+                <td>In Stock</td>
+              </tr>
+              <tr>
+                <td>HP Laptop</td>
+                <td>Laptops</td>
+                <td>£749</td>
+                <td>In Stock</td>
+              </tr>
+              <tr>
+                <td>Apple iPad</td>
+                <td>Tablets</td>
+                <td>£599</td>
+                <td>In Stock</td>
+              </tr>
+              <tr>
+                <td>Galaxy Ear Buds</td>
+                <td>Accessories</td>
+                <td>£199</td>
+                <td>In Stock</td>
+              </tr>
+              <tr>
+                <td>Apple iPhone 18 Pro Max</td>
+                <td>Smartphones</td>
+                <td>£999</td>
+                <td>In Stock</td>
+              </tr>
+              <tr>
+                <td>Dell Latitutde 5440</td>
+                <td>Laptops</td>
+                <td>£789</td>
+                <td>Out Of Stock</td>
+              </tr>
+              <tr>
+                <td>Google Pixel Tablet</td>
+                <td>Tablets</td>
+                <td>£329</td>
+                <td>In Stock</td>
+              </tr>
+              <tr>
+                <td>Bose Headphones</td>
+                <td>Accessories</td>
+                <td>£299</td>
+                <td>Out Of Stock</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PRODUCT DETAILS -->
+      <section id="details">
+        <h2 class="section-title">Product Details</h2>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem neque
+          pariatur libero provident qui quia voluptate facere ea assumenda et.
+        </p>
+      </section>
+
+      <!-- ABOUT SECTION -->
+      <section id="about">
+        <h2 class="section-title">About</h2>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem neque
+          pariatur libero provident qui quia voluptate facere ea assumenda et.
+        </p>
+      </section>
+
+      <!-- CONTACT SECTION -->
+      <section id="contact">
+        <h2 class="section-title">Contact</h2>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem neque
+          pariatur libero provident qui quia voluptate facere ea assumenda et.
+        </p>
+      </section>
+
+      <div><a href="#top">Back To Top</a></div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="container">
+      <p>&copy; 2026 MyStore. All rights reserved.</p>
+    </footer>
+  </body>
+</html>
