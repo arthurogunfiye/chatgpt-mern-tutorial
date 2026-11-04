@@ -73,6 +73,39 @@ export const products = [
   }
 ];
 
+function filterProducts(category) {
+  if (category === 'all') {
+    return products;
+  }
+
+  return products.filter(product => product.category === category);
+}
+
+function sortProducts(productsList, sortBy) {
+  const sortedProducts = [...productsList];
+
+  switch (sortBy) {
+    case 'price-low':
+      return sortedProducts.sort((a, b) => a.price - b.price);
+
+    case 'price-high':
+      return sortedProducts.sort((a, b) => b.price - a.price);
+
+    case 'name':
+      return sortedProducts.sort((a, b) => a.name.localeCompare(b.name));
+
+    default:
+      return sortedProducts;
+  }
+}
+
+const sorted = sortProducts(products, 'name');
+console.log(sorted.map(pdt => pdt.name));
+
+/* =============
+    CHALLENGES
+  ============== */
+
 // const productsBelow600 = products.filter(pdt => pdt.price < 600);
 // console.log(`Products below £600: ${JSON.stringify(productsBelow600)}`);
 
@@ -89,3 +122,30 @@ export const products = [
 //   products.filter(pdt => pdt.category === category);
 
 // console.log(getProductsByCategory('Tablets'));
+
+/* ========
+    NOTES
+  ========= */
+
+// Sorting arranges elements in a specified order.
+
+// For example:
+// const numbers = [50, 10, 100, 5];
+
+// numbers.sort((a, b) => a - b);
+
+// console.log(numbers);
+// [5, 10, 50, 100]
+
+// Without a comparison function, JavaScript's default sort() compares elements as strings, which is often unsuitable for numbers.
+
+// How the comparison callback works
+// For a - b:
+// - A negative result means a should come before b.
+// - A positive result means b should come before a.
+// - Zero means they compare equally for sorting purposes.
+// For descending order, reverse the subtraction:
+
+// numbers.sort((a, b) => b - a);
+
+// Important: sort() mutates the array being sorted. We don't want customers' sorting choices to permanently reorder our original product catalogue.
