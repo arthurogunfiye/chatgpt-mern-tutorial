@@ -1,3 +1,8 @@
+const categoryFilter = document.querySelector('#category-filter');
+const sortSelect = document.querySelector('#sort-products');
+const productsContainer = document.querySelector('.products-list');
+const resultsElement = document.querySelector('#product-results');
+
 export const products = [
   {
     id: 101,
@@ -99,8 +104,41 @@ function sortProducts(productsList, sortBy) {
   }
 }
 
-const sorted = sortProducts(products, 'name');
-console.log(sorted.map(pdt => pdt.name));
+function updateProductView() {
+  const category = categoryFilter.value;
+  const sortBy = sortSelect.value;
+
+  const filteredProducts = filterProducts(category);
+  const sortedProducts = sortProducts(filteredProducts, sortBy);
+
+  const cards = new Map(
+    [...productsContainer.querySelectorAll('.product-card')].map(card => {
+      const button = card.querySelector('.add-to-cart');
+      return [Number(button.dataset.productId), card];
+    })
+  );
+
+  const visibleCards = sortedProducts
+    .map(product => productCards.get(product.id))
+    .filter(Boolean);
+
+  productsContainer.replaceChildren(...visibleCards);
+
+  resultsElement.textContent = `${visibleCards.length} products found`;
+}
+
+const productCards = new Map(
+  [...productsContainer.querySelectorAll('.product-card')].map(card => {
+    const button = card.querySelector('.add-to-cart');
+    return [Number(button.dataset.productId), card];
+  })
+);
+
+categoryFilter.addEventListener('change', updateProductView);
+
+sortSelect.addEventListener('change', updateProductView);
+
+updateProductView();
 
 /* =============
     CHALLENGES
