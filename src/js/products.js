@@ -13,7 +13,7 @@ export const products = [
     name: 'HP Laptop',
     category: 'Laptops',
     price: 749,
-    quantity: 5,
+    quantity: 7,
     inStock: true,
     onSale: false
   },
@@ -22,8 +22,8 @@ export const products = [
     name: 'Apple iPad',
     category: 'Tablets',
     price: 599,
-    quantity: 5,
-    inStock: true,
+    quantity: 0,
+    inStock: false,
     onSale: false
   },
   {
@@ -31,7 +31,7 @@ export const products = [
     name: 'Galaxy Ear Buds',
     category: 'Accessories',
     price: 199,
-    quantity: 5,
+    quantity: 6,
     inStock: true,
     onSale: false
   },
@@ -40,7 +40,7 @@ export const products = [
     name: 'Apple iPhone 18 Pro Max',
     category: 'Smartphones',
     price: 999,
-    quantity: 5,
+    quantity: 8,
     inStock: true,
     onSale: true
   },
