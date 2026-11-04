@@ -3,6 +3,7 @@ import { products } from './products.js';
 
 const resetCartBtns = document.querySelectorAll('.reset-cart');
 const addToCartButtons = document.querySelectorAll('.add-to-cart');
+const productsList = document.querySelector('.products-list');
 
 let cart = [];
 
@@ -157,18 +158,20 @@ resetCartBtns.forEach(button => {
   button.addEventListener('click', resetCart);
 });
 
-addToCartButtons.forEach(button => {
-  button.addEventListener('click', event => {
-    const rawProductId = event.currentTarget.dataset.productId;
-    const productId = Number(rawProductId);
+productsList.addEventListener('click', event => {
+  const button = event.target.closest('.add-to-cart');
 
-    if (!rawProductId || !Number.isSafeInteger(productId) || productId <= 0) {
-      console.error('Invalid product ID');
-      return;
-    }
+  if (!button || !productsList.contains(button)) return;
 
-    addToCart(productId);
-  });
+  const rawProductId = button.dataset.productId;
+  const productId = Number(rawProductId);
+
+  if (!rawProductId || !Number.isSafeInteger(productId) || productId <= 0) {
+    console.error('Invalid product ID');
+    return;
+  }
+
+  addToCart(productId);
 });
 
 function increaseQuantity(productId) {
