@@ -413,3 +413,34 @@ a:focus-visible {
   outline: 3px solid #f59e0b;
   outline-offset: 3px;
 }
+
+/* ======================
+    SHOPPING CART
+========================= */
+
+#shopping-cart {
+  margin-block: 2rem;
+  padding: 1.5rem;
+  background-color: var(--color-card);
+  border-radius: var(--radius-card);
+}
+
+.cart-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.cart-item button {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.cart-item button:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
