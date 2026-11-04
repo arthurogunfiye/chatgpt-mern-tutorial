@@ -328,9 +328,29 @@ a:focus-visible {
   margin: 0;
 }
 
-.product-price {
+.quantity-and-price-wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-content: space-between;
+}
+
+.product-price,
+.product-quantity {
   margin: 0;
   font-weight: 700;
+}
+
+.product-price {
+  display: grid;
+  justify-content: flex-end;
+}
+
+.out-of-stock {
+  color: red;
+}
+
+.quantity {
+  color: blue;
 }
 
 .product-link {
