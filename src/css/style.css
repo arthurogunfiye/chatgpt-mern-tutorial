@@ -267,6 +267,14 @@ a:focus-visible {
   gap: var(--card-gap);
 }
 
+.no-products {
+  grid-column: 1 / -1;
+  padding: 2rem 1rem;
+  text-align: center;
+  background-color: var(--color-card);
+  border-radius: var(--radius-card);
+}
+
 .product-card {
   position: relative;
   display: flex;
@@ -452,16 +460,6 @@ a:focus-visible {
   border-radius: var(--radius-card);
 }
 
-/* .cart-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid #d1d5db;
-} */
-
 .cart-item {
   display: grid;
   grid-template-columns: auto auto 1fr;
@@ -504,4 +502,42 @@ a:focus-visible {
 .cart-item button:focus-visible {
   outline: 3px solid #f59e0b;
   outline-offset: 3px;
+}
+
+/* ===========
+    FILTERS
+============== */
+
+.product-controls {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: var(--color-card);
+  border-radius: var(--radius-card);
+}
+
+.product-controls select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #9ca3af;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.product-controls select:focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+
+@media (min-width: 768px) {
+  .product-controls {
+    grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: center;
+  }
+
+  #product-results {
+    grid-column: 1 / -1;
+  }
 }

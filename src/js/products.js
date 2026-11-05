@@ -1,5 +1,6 @@
 const categoryFilter = document.querySelector('#category-filter');
 const sortSelect = document.querySelector('#sort-products');
+const availabilityFilter = document.querySelector('#availability-filter');
 const productsContainer = document.querySelector('.products-list');
 const resultsElement = document.querySelector('#product-results');
 
@@ -104,27 +105,45 @@ function sortProducts(productsList, sortBy) {
   }
 }
 
+function filterProductsByAvailability(productsList, availability) {
+  switch (availability) {
+    case 'inStock':
+      return productsList.filter(pdt => pdt.inStock);
+
+    case 'outOfStock':
+      return productsList.filter(pdt => !pdt.inStock);
+
+    default:
+      return productsList;
+  }
+}
+
 function updateProductView() {
   const category = categoryFilter.value;
   const sortBy = sortSelect.value;
+  const availability = availabilityFilter.value;
 
   const filteredProducts = filterProducts(category);
   const sortedProducts = sortProducts(filteredProducts, sortBy);
-
-  const cards = new Map(
-    [...productsContainer.querySelectorAll('.product-card')].map(card => {
-      const button = card.querySelector('.add-to-cart');
-      return [Number(button.dataset.productId), card];
-    })
+  const availableProducts = filterProductsByAvailability(
+    sortedProducts,
+    availability
   );
 
-  const visibleCards = sortedProducts
+  const visibleCards = availableProducts
     .map(product => productCards.get(product.id))
     .filter(Boolean);
 
-  productsContainer.replaceChildren(...visibleCards);
+  if (visibleCards.length === 0) {
+    const message = document.createElement('p');
+    message.className = 'no-products';
+    message.textContent = 'No products match your filters.';
+    productsContainer.replaceChildren(message);
+  } else {
+    productsContainer.replaceChildren(...visibleCards);
+  }
 
-  resultsElement.textContent = `${visibleCards.length} products found`;
+  resultsElement.textContent = `${visibleCards.length} ${visibleCards.length === 1 ? 'product' : 'products'} found`;
 }
 
 const productCards = new Map(
@@ -137,6 +156,8 @@ const productCards = new Map(
 categoryFilter.addEventListener('change', updateProductView);
 
 sortSelect.addEventListener('change', updateProductView);
+
+availabilityFilter.addEventListener('change', updateProductView);
 
 updateProductView();
 
