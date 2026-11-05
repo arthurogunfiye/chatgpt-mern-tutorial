@@ -6,6 +6,7 @@ const availabilityFilter = document.querySelector('#availability-filter');
 const productsContainer = document.querySelector('.products-list');
 const resultsElement = document.querySelector('#product-results');
 const clearFiltersBtn = document.querySelector('#clear-filters');
+const addToCartButtons = document.querySelectorAll('.add-to-cart');
 
 const productCards = new Map(
   [...productsContainer.querySelectorAll('.product-card')].map(card => {
@@ -101,6 +102,44 @@ function updateProductView() {
   updateClearFiltersButton();
 }
 
+function renderProductQuantity(button, product) {
+  const quantityElement = button
+    .closest('.product-card')
+    .querySelector('.product-quantity');
+
+  const statusElement = document.createElement('span');
+
+  if (product.inStock) {
+    statusElement.className = 'quantity';
+    statusElement.textContent = product.quantity;
+    quantityElement.replaceChildren('In Stock: ', statusElement);
+  } else {
+    statusElement.className = 'out-of-stock';
+    statusElement.textContent = 'Out of stock';
+    quantityElement.replaceChildren(statusElement);
+  }
+}
+
+function updateStockStatus() {
+  addToCartButtons.forEach(button => {
+    const productId = Number(button.dataset.productId);
+    const product = products.find(pdt => pdt.id === productId);
+
+    if (!product) {
+      console.error(`Product with ID ${productId} not found!`);
+      button.disabled = true;
+      button.textContent = 'Unavailable';
+      return;
+    }
+
+    const available = product.inStock && product.quantity > 0;
+
+    button.disabled = !available;
+    button.textContent = available ? 'Add To Cart' : 'Out Of Stock';
+    renderProductQuantity(button, product);
+  });
+}
+
 export function initCatalogue() {
   categoryFilter.addEventListener('change', updateProductView);
   sortSelect.addEventListener('change', updateProductView);
@@ -116,5 +155,6 @@ export function initCatalogue() {
     });
   });
 
+  updateStockStatus();
   updateProductView();
 }
