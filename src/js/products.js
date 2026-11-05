@@ -3,6 +3,7 @@ const sortSelect = document.querySelector('#sort-products');
 const availabilityFilter = document.querySelector('#availability-filter');
 const productsContainer = document.querySelector('.products-list');
 const resultsElement = document.querySelector('#product-results');
+const clearFiltersBtn = document.querySelector('#clear-filters');
 
 export const products = [
   {
@@ -108,14 +109,22 @@ function sortProducts(productsList, sortBy) {
 function filterProductsByAvailability(productsList, availability) {
   switch (availability) {
     case 'inStock':
-      return productsList.filter(pdt => pdt.inStock);
+      return productsList.filter(pdt => pdt.inStock && pdt.quantity > 0);
 
     case 'outOfStock':
-      return productsList.filter(pdt => !pdt.inStock);
+      return productsList.filter(pdt => !pdt.inStock || pdt.quantity <= 0);
 
     default:
       return productsList;
   }
+}
+
+function clearFilters() {
+  categoryFilter.value = 'all';
+  sortSelect.value = 'default';
+  availabilityFilter.value = 'all';
+
+  updateProductView();
 }
 
 function updateProductView() {
@@ -124,13 +133,13 @@ function updateProductView() {
   const availability = availabilityFilter.value;
 
   const filteredProducts = filterProducts(category);
-  const sortedProducts = sortProducts(filteredProducts, sortBy);
   const availableProducts = filterProductsByAvailability(
-    sortedProducts,
+    filteredProducts,
     availability
   );
+  const sortedProducts = sortProducts(availableProducts, sortBy);
 
-  const visibleCards = availableProducts
+  const visibleCards = sortedProducts
     .map(product => productCards.get(product.id))
     .filter(Boolean);
 
@@ -158,6 +167,8 @@ categoryFilter.addEventListener('change', updateProductView);
 sortSelect.addEventListener('change', updateProductView);
 
 availabilityFilter.addEventListener('change', updateProductView);
+
+clearFiltersBtn.addEventListener('click', clearFilters);
 
 updateProductView();
 
