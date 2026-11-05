@@ -556,6 +556,11 @@ a:focus-visible {
   outline-offset: 3px;
 }
 
+#clear-filters:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 @media (min-width: 768px) {
   .product-controls {
     grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);

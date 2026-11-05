@@ -127,6 +127,15 @@ function clearFilters() {
   updateProductView();
 }
 
+function updateClearFiltersButton() {
+  const hasActiveFilters =
+    categoryFilter.value !== 'all' ||
+    sortSelect.value !== 'default' ||
+    availabilityFilter.value !== 'all';
+
+  clearFiltersBtn.disabled = !hasActiveFilters;
+}
+
 function updateProductView() {
   const category = categoryFilter.value;
   const sortBy = sortSelect.value;
@@ -153,6 +162,8 @@ function updateProductView() {
   }
 
   resultsElement.textContent = `${visibleCards.length} ${visibleCards.length === 1 ? 'product' : 'products'} found`;
+
+  updateClearFiltersButton();
 }
 
 const productCards = new Map(
