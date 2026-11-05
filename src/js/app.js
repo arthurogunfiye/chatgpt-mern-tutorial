@@ -1,5 +1,6 @@
 'use strict';
 import { products } from './products.js';
+import { initCatalogue } from './catalogue.js';
 
 const resetCartBtns = document.querySelectorAll('.reset-cart');
 const addToCartButtons = document.querySelectorAll('.add-to-cart');
@@ -267,5 +268,6 @@ function updateStockStatus() {
   });
 }
 
+initCatalogue();
 updateCartDisplay();
 updateStockStatus();
