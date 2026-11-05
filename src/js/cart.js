@@ -1,5 +1,7 @@
 import { products } from './products.js';
 
+const CART_STORAGE_KEY = 'mystore-cart-v1';
+
 const resetCartBtns = document.querySelectorAll('.reset-cart');
 const productsList = document.querySelector('.products-list');
 
@@ -90,7 +92,7 @@ function renderCart() {
     const itemPrice = document.createElement('span');
     const itemQty = document.createElement('span');
     const subtotalElement = document.createElement('span');
-    itemPrice.textContent = `£${product.price}`;
+    itemPrice.textContent = formatPrice(product.price);
     itemQty.textContent = `${item.quantity} * `;
     subtotalElement.textContent = ` = ${formatPrice(getItemSubtotal(product.id))}`;
     itemSubtotalElement.append(itemQty, itemPrice, subtotalElement);
@@ -144,6 +146,7 @@ function renderCart() {
 function updateCartDisplay() {
   updateCartCount();
   renderCart();
+  saveCart();
 }
 
 function resetCart() {
@@ -207,7 +210,73 @@ function getItemSubtotal(productId) {
   return product.price * itemInCart.quantity;
 }
 
+function saveCart() {
+  try {
+    const serializedCart = JSON.stringify(cart);
+    localStorage.setItem(CART_STORAGE_KEY, serializedCart);
+  } catch (error) {
+    console.error('Unable to save cart: ', error);
+  }
+}
+
+function loadCart() {
+  try {
+    const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+
+    if (savedCart === null) return [];
+
+    const parsedCart = JSON.parse(savedCart);
+
+    if (!Array.isArray(parsedCart)) return [];
+
+    const validCart = [];
+
+    for (const item of parsedCart) {
+      if (!item || typeof item !== 'object') continue;
+
+      const product = products.find(pdt => pdt.id === item.productId);
+
+      if (
+        !product ||
+        !product.inStock ||
+        !Number.isSafeInteger(product.quantity) ||
+        product.quantity <= 0
+      ) {
+        continue;
+      }
+
+      if (!Number.isSafeInteger(item.quantity) || item.quantity <= 0) continue;
+
+      const existingItem = validCart.find(
+        cartItem => cartItem.productId === product.id
+      );
+
+      const remainingStock = product.quantity - (existingItem?.quantity ?? 0);
+
+      if (remainingStock <= 0) continue;
+
+      const quantity = Math.min(item.quantity, remainingStock);
+
+      if (existingItem) {
+        existingItem.quantity += quantity;
+      } else {
+        validCart.push({
+          productId: product.id,
+          quantity
+        });
+      }
+    }
+
+    return validCart;
+  } catch (error) {
+    console.error('Unable to load cart: ', error);
+    return [];
+  }
+}
+
 export function initCart() {
+  cart = loadCart();
+
   resetCartBtns.forEach(button => {
     button.addEventListener('click', resetCart);
   });
