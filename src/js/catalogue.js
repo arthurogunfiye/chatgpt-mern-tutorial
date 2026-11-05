@@ -109,7 +109,7 @@ function renderProductQuantity(button, product) {
 
   const statusElement = document.createElement('span');
 
-  if (product.inStock) {
+  if (product.inStock && product.quantity > 0) {
     statusElement.className = 'quantity';
     statusElement.textContent = product.quantity;
     quantityElement.replaceChildren('In Stock: ', statusElement);
@@ -145,15 +145,6 @@ export function initCatalogue() {
   sortSelect.addEventListener('change', updateProductView);
   availabilityFilter.addEventListener('change', updateProductView);
   clearFiltersBtn.addEventListener('click', clearFilters);
-
-  [categoryFilter, sortSelect, availabilityFilter].forEach(select => {
-    select.addEventListener('keydown', event => {
-      if (event.key === 'Enter') {
-        event.preventDefault();
-        select.showPicker();
-      }
-    });
-  });
 
   updateStockStatus();
   updateProductView();

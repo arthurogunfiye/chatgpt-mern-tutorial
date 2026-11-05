@@ -213,9 +213,15 @@ export function initCart() {
   });
 
   productsList.addEventListener('click', event => {
-    const button = event.target.closest('.add-to-cart');
+    const target = event.target;
 
-    if (!button || !productsList.contains(button)) return;
+    if (!(target instanceof Element)) return;
+
+    const button = target.closest('.add-to-cart');
+
+    if (!button || !productsList.contains(button) || button.disabled) {
+      return;
+    }
 
     const rawProductId = button.dataset.productId;
     const productId = Number(rawProductId);
