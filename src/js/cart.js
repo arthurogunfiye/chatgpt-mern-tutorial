@@ -253,6 +253,9 @@ function validateItems(rawItems, enforceStock) {
     );
 
     const wanted = item.quantity + (validItem?.quantity ?? 0);
+
+    if (!Number.isSafeInteger(wanted)) continue;
+
     const quantity = enforceStock ? Math.min(wanted, product.quantity) : wanted;
 
     if (validItem) {
@@ -305,15 +308,24 @@ function saveForLater(productId) {
     item => item.productId === productId
   );
 
+  // Use zero if the product has not been saved before.
+  const existingSavedQuantity = itemExistingInSavedItems?.quantity ?? 0;
+
+  // Preserve all units from both collections.
+  const combinedQuantity = existingSavedQuantity + cartItem.quantity;
+
+  // Reject invalid combined quantities before changing state.
+  if (!Number.isSafeInteger(combinedQuantity) || combinedQuantity <= 0) {
+    console.error('Invalid combined quantity');
+    return;
+  }
+
   if (itemExistingInSavedItems) {
-    itemExistingInSavedItems.quantity = Math.min(
-      itemExistingInSavedItems.quantity + cartItem.quantity,
-      product.quantity
-    );
+    itemExistingInSavedItems.quantity = combinedQuantity;
   } else {
     savedItems.push({
       productId,
-      quantity: cartItem.quantity
+      quantity: combinedQuantity
     });
   }
 
@@ -329,7 +341,7 @@ function moveToCart(productId) {
 
   const product = products.find(pdt => pdt.id === productId);
 
-  if (!product || !product.inStock) return;
+  if (!product || !product.inStock || product.quantity <= 0) return;
 
   const existingCartItem = cart.find(item => item.productId === productId);
 
@@ -428,7 +440,7 @@ function renderSavedItems() {
     moveToCartBtn.className = 'move-to-cart-btn';
     moveToCartBtn.setAttribute('aria-label', `Move ${product.name} to cart`);
     moveToCartBtn.textContent = 'Move To Cart';
-    moveToCartBtn.disabled = !product.inStock || product.quantity === 0;
+    moveToCartBtn.disabled = !product.inStock || product.quantity <= 0;
 
     moveToCartBtn.addEventListener('click', () => moveToCart(product.id));
 
