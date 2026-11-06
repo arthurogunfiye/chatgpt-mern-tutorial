@@ -423,6 +423,7 @@ function renderSavedItems() {
     moveToCartBtn.className = 'move-to-cart-btn';
     moveToCartBtn.setAttribute('aria-label', `Move ${product.name} to cart`);
     moveToCartBtn.textContent = 'Move To Cart';
+    moveToCartBtn.disabled = !product.inStock || product.quantity === 0;
 
     moveToCartBtn.addEventListener('click', () => moveToCart(product.id));
 
