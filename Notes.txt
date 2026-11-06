@@ -881,3 +881,11 @@ Think of `loadCart()` as a filtering and rebuilding operation, not merely a retr
 - `existingItem` prevents duplicate product entries in the resulting cart.
 
 Once you become comfortable with guard conditions and early exits, you'll find them useful in form validation, API responses, authentication, database operations and many other areas of full-stack development.
+
+===================================
+  moveToCart() function in cart.js
+===================================
+
+existingCartItem?.quantity ?? 0
+?. means "read quantity if this exists, otherwise give undefined". This avoids the TypeError from Question 1.
+?? means "if the left side is undefined or null, use the right side instead". Here that's 0, because an item that isn't in the cart has a quantity of 0.

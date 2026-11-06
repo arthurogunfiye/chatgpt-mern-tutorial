@@ -315,7 +315,7 @@ function saveForLater(productId) {
 
   removeFromCart(productId);
 
-  renderSavedItems();
+  updateSavedItemsDisplay();
 }
 
 function moveToCart(productId) {
@@ -323,21 +323,33 @@ function moveToCart(productId) {
 
   if (!savedItem) return;
 
+  const product = products.find(pdt => pdt.id === productId);
+
+  if (!product || !product.inStock) return;
+
   const existingCartItem = cart.find(item => item.productId === productId);
 
+  const numberOfItemsInCart = existingCartItem?.quantity ?? 0;
+  const spaceLeftInCart = product.quantity - numberOfItemsInCart;
+  const quantityToMoveToCart = Math.min(savedItem.quantity, spaceLeftInCart);
+
+  if (quantityToMoveToCart <= 0) return;
+
   if (existingCartItem) {
-    existingCartItem.quantity += savedItem.quantity;
+    existingCartItem.quantity += quantityToMoveToCart;
   } else {
     cart.push({
       productId,
-      quantity: savedItem.quantity
+      quantity: quantityToMoveToCart
     });
   }
 
-  removeItemFromSavedItems(productId);
+  savedItem.quantity -= quantityToMoveToCart;
+
+  if (savedItem.quantity === 0) removeItemFromSavedItems(productId);
 
   updateCartDisplay();
-  renderSavedItems();
+  updateSavedItemsDisplay();
 }
 
 function removeItemFromSavedItems(productId) {
@@ -346,6 +358,63 @@ function removeItemFromSavedItems(productId) {
   if (index === -1) return;
 
   savedItems.splice(index, 1);
+}
+
+function saveSavedItems() {
+  try {
+    const serializedSavedItems = JSON.stringify(savedItems);
+    localStorage.setItem(SAVED_ITEMS_STORAGE_KEY, serializedSavedItems);
+  } catch (error) {
+    console.error('Unable to save saved items: ', error);
+  }
+}
+
+function loadSavedItems() {
+  try {
+    const savedSavedItems = localStorage.getItem(SAVED_ITEMS_STORAGE_KEY);
+
+    if (savedSavedItems === null) return [];
+
+    const parsedSavedItems = JSON.parse(savedSavedItems);
+
+    if (!Array.isArray(parsedSavedItems)) return [];
+
+    const validSavedItems = [];
+
+    for (const savedItem of parsedSavedItems) {
+      if (!savedItem || typeof savedItem !== 'object') continue;
+
+      if (!Number.isSafeInteger(savedItem.quantity) || savedItem.quantity <= 0)
+        continue;
+
+      const product = products.find(pdt => pdt.id === savedItem.productId);
+
+      if (!product) continue;
+
+      const existingSavedItem = validSavedItems.find(
+        validItem => validItem.productId === product.id
+      );
+
+      if (existingSavedItem) {
+        existingSavedItem.quantity += savedItem.quantity;
+      } else {
+        validSavedItems.push({
+          productId: product.id,
+          quantity: savedItem.quantity
+        });
+      }
+    }
+
+    return validSavedItems;
+  } catch (error) {
+    console.error('Unable to load saved items: ', error);
+    return [];
+  }
+}
+
+function updateSavedItemsDisplay() {
+  renderSavedItems();
+  saveSavedItems();
 }
 
 function renderSavedItems() {
@@ -391,6 +460,7 @@ function renderSavedItems() {
 
 export function initCart() {
   cart = loadCart();
+  savedItems = loadSavedItems();
 
   resetCartBtns.forEach(button => {
     button.addEventListener('click', resetCart);
@@ -419,5 +489,5 @@ export function initCart() {
   });
 
   updateCartDisplay();
-  renderSavedItems();
+  updateSavedItemsDisplay();
 }
