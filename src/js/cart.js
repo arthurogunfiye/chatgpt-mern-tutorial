@@ -1,11 +1,13 @@
 import { products } from './products.js';
 
 const CART_STORAGE_KEY = 'mystore-cart-v1';
+const SAVED_ITEMS_STORAGE_KEY = 'mystore-saved-items-v1';
 
 const resetCartBtns = document.querySelectorAll('.reset-cart');
 const productsList = document.querySelector('.products-list');
 
 let cart = [];
+let savedItems = [];
 
 function addToCart(productId) {
   const product = products.find(pdt => pdt.id === productId);
@@ -130,12 +132,25 @@ function renderCart() {
       removeFromCart(product.id);
     });
 
+    const saveForLaterButton = document.createElement('button');
+    saveForLaterButton.type = 'button';
+    saveForLaterButton.textContent = 'Save For Later';
+    saveForLaterButton.setAttribute(
+      'aria-label',
+      `Save ${product.name} for later`
+    );
+
+    saveForLaterButton.addEventListener('click', () =>
+      saveForLater(product.id)
+    );
+
     row.append(
       label,
       itemSubtotalElement,
       increaseItemQtyBtn,
       decreaseItemQtyBtn,
-      removeButton
+      removeButton,
+      saveForLaterButton
     );
     cartItemsElement.append(row);
   });
@@ -152,7 +167,6 @@ function updateCartDisplay() {
 function resetCart() {
   cart = [];
   updateCartDisplay();
-  console.log('Cart reset');
 }
 
 function increaseQuantity(productId) {
@@ -274,6 +288,107 @@ function loadCart() {
   }
 }
 
+function saveForLater(productId) {
+  const cartItem = cart.find(item => item.productId === productId);
+
+  if (!cartItem) return;
+
+  const product = products.find(pdt => pdt.id === productId);
+
+  if (!product) return;
+
+  const itemExistingInSavedItems = savedItems.find(
+    item => item.productId === productId
+  );
+
+  if (itemExistingInSavedItems) {
+    itemExistingInSavedItems.quantity = Math.min(
+      itemExistingInSavedItems.quantity + cartItem.quantity,
+      product.quantity
+    );
+  } else {
+    savedItems.push({
+      productId,
+      quantity: cartItem.quantity
+    });
+  }
+
+  removeFromCart(productId);
+
+  renderSavedItems();
+}
+
+function moveToCart(productId) {
+  const savedItem = savedItems.find(item => item.productId === productId);
+
+  if (!savedItem) return;
+
+  const existingCartItem = cart.find(item => item.productId === productId);
+
+  if (existingCartItem) {
+    existingCartItem.quantity += savedItem.quantity;
+  } else {
+    cart.push({
+      productId,
+      quantity: savedItem.quantity
+    });
+  }
+
+  removeItemFromSavedItems(productId);
+
+  updateCartDisplay();
+  renderSavedItems();
+}
+
+function removeItemFromSavedItems(productId) {
+  const index = savedItems.findIndex(item => item.productId === productId);
+
+  if (index === -1) return;
+
+  savedItems.splice(index, 1);
+}
+
+function renderSavedItems() {
+  const savedItemsEl = document.querySelector('#saved-items');
+
+  savedItemsEl.replaceChildren();
+
+  if (savedItems.length === 0) {
+    const message = document.createElement('p');
+    message.textContent = 'You have no saved items.';
+    savedItemsEl.append(message);
+  }
+
+  savedItems.forEach(item => {
+    const product = products.find(pdt => pdt.id === item.productId);
+
+    if (!product) return;
+
+    const row = document.createElement('div');
+    row.className = 'saved-item';
+
+    const productNameEl = document.createElement('span');
+    productNameEl.className = 'saved-item-name';
+    productNameEl.textContent = `${product.name}`;
+
+    const productQuantity = document.createElement('span');
+    productQuantity.className = 'saved-item-quantity';
+    productQuantity.textContent = `Quantity: ${item.quantity}`;
+
+    const moveToCartBtn = document.createElement('button');
+    moveToCartBtn.type = 'button';
+    moveToCartBtn.className = 'move-to-cart-btn';
+    moveToCartBtn.setAttribute('aria-label', `Move ${product.name} to cart`);
+    moveToCartBtn.textContent = 'Move To Cart';
+
+    moveToCartBtn.addEventListener('click', () => moveToCart(product.id));
+
+    row.append(productNameEl, productQuantity, moveToCartBtn);
+
+    savedItemsEl.append(row);
+  });
+}
+
 export function initCart() {
   cart = loadCart();
 
@@ -304,4 +419,5 @@ export function initCart() {
   });
 
   updateCartDisplay();
+  renderSavedItems();
 }

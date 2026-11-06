@@ -488,7 +488,7 @@ a:focus-visible {
 
 @media (min-width: 768px) {
   .cart-item {
-    grid-template-columns: 2fr 1.5fr auto auto auto;
+    grid-template-columns: 2fr 1.5fr auto auto auto auto;
   }
 
   .cart-item-name,
@@ -506,6 +506,17 @@ a:focus-visible {
 .cart-item button:focus-visible {
   outline: 3px solid #f59e0b;
   outline-offset: 3px;
+}
+
+/* =================
+    SAVE FOR LATER
+==================== */
+
+#saved-for-later {
+  margin-block: 2rem;
+  padding: 1.5rem;
+  background-color: var(--color-card);
+  border-radius: var(--radius-card);
 }
 
 /* ===========
