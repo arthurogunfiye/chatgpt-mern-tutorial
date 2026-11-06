@@ -224,6 +224,48 @@ function getItemSubtotal(productId) {
   return product.price * itemInCart.quantity;
 }
 
+function validateItems(rawItems, enforceStock) {
+  if (!Array.isArray(rawItems)) return [];
+
+  const validItems = [];
+
+  for (const item of rawItems) {
+    if (!item || typeof item !== 'object') continue;
+
+    if (!Number.isSafeInteger(item.quantity) || item.quantity <= 0) continue;
+
+    const product = products.find(pdt => pdt.id === item.productId);
+
+    if (!product) continue;
+
+    if (
+      enforceStock &&
+      (!product.inStock ||
+        !Number.isSafeInteger(product.quantity) ||
+        product.quantity <= 0)
+    )
+      continue;
+
+    const validItem = validItems.find(
+      validItem => validItem.productId === product.id
+    );
+
+    const wanted = item.quantity + (validItem?.quantity ?? 0);
+    const quantity = enforceStock ? Math.min(wanted, product.quantity) : wanted;
+
+    if (validItem) {
+      validItem.quantity = quantity;
+    } else {
+      validItems.push({
+        productId: product.id,
+        quantity
+      });
+    }
+  }
+
+  return validItems;
+}
+
 function saveCart() {
   try {
     const serializedCart = JSON.stringify(cart);
@@ -241,47 +283,7 @@ function loadCart() {
 
     const parsedCart = JSON.parse(savedCart);
 
-    if (!Array.isArray(parsedCart)) return [];
-
-    const validCart = [];
-
-    for (const item of parsedCart) {
-      if (!item || typeof item !== 'object') continue;
-
-      const product = products.find(pdt => pdt.id === item.productId);
-
-      if (
-        !product ||
-        !product.inStock ||
-        !Number.isSafeInteger(product.quantity) ||
-        product.quantity <= 0
-      ) {
-        continue;
-      }
-
-      if (!Number.isSafeInteger(item.quantity) || item.quantity <= 0) continue;
-
-      const existingItem = validCart.find(
-        cartItem => cartItem.productId === product.id
-      );
-
-      const remainingStock = product.quantity - (existingItem?.quantity ?? 0);
-
-      if (remainingStock <= 0) continue;
-
-      const quantity = Math.min(item.quantity, remainingStock);
-
-      if (existingItem) {
-        existingItem.quantity += quantity;
-      } else {
-        validCart.push({
-          productId: product.id,
-          quantity
-        });
-      }
-    }
-
-    return validCart;
+    return validateItems(parsedCart, true);
   } catch (error) {
     console.error('Unable to load cart: ', error);
     return [];
@@ -377,35 +379,7 @@ function loadSavedItems() {
 
     const parsedSavedItems = JSON.parse(savedSavedItems);
 
-    if (!Array.isArray(parsedSavedItems)) return [];
-
-    const validSavedItems = [];
-
-    for (const savedItem of parsedSavedItems) {
-      if (!savedItem || typeof savedItem !== 'object') continue;
-
-      if (!Number.isSafeInteger(savedItem.quantity) || savedItem.quantity <= 0)
-        continue;
-
-      const product = products.find(pdt => pdt.id === savedItem.productId);
-
-      if (!product) continue;
-
-      const existingSavedItem = validSavedItems.find(
-        validItem => validItem.productId === product.id
-      );
-
-      if (existingSavedItem) {
-        existingSavedItem.quantity += savedItem.quantity;
-      } else {
-        validSavedItems.push({
-          productId: product.id,
-          quantity: savedItem.quantity
-        });
-      }
-    }
-
-    return validSavedItems;
+    return validateItems(parsedSavedItems, false);
   } catch (error) {
     console.error('Unable to load saved items: ', error);
     return [];
