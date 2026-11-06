@@ -490,6 +490,16 @@ a:focus-visible {
   grid-column: 1 / -1;
 }
 
+#saved-items-message {
+  margin: 0 0 0.5rem;
+  color: #b91c1c;
+  font-weight: 600;
+}
+
+#saved-items-message:empty {
+  display: none;
+}
+
 .saved-item {
   display: grid;
   grid-template-columns: 1fr auto;

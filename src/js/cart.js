@@ -5,6 +5,7 @@ const SAVED_ITEMS_STORAGE_KEY = 'mystore-saved-items-v1';
 
 const resetCartBtns = document.querySelectorAll('.reset-cart');
 const productsList = document.querySelector('.products-list');
+const savedItemMessage = document.querySelector('#saved-items-message');
 
 let cart = [];
 let savedItems = [];
@@ -159,6 +160,7 @@ function renderCart() {
 }
 
 function updateCartDisplay() {
+  savedItemMessage.textContent = '';
   updateCartCount();
   renderCart();
   saveCart();
@@ -335,7 +337,10 @@ function moveToCart(productId) {
   const spaceLeftInCart = product.quantity - numberOfItemsInCart;
   const quantityToMoveToCart = Math.min(savedItem.quantity, spaceLeftInCart);
 
-  if (quantityToMoveToCart <= 0) return;
+  if (quantityToMoveToCart <= 0) {
+    savedItemMessage.textContent = `Cannot move ${product.name} to cart`;
+    return;
+  }
 
   if (existingCartItem) {
     existingCartItem.quantity += quantityToMoveToCart;
