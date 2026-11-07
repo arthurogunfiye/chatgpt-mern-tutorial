@@ -15,7 +15,7 @@ export const products = [
     price: 749,
     quantity: 7,
     inStock: true,
-    onSale: false
+    onSale: true
   },
   {
     id: 103,
