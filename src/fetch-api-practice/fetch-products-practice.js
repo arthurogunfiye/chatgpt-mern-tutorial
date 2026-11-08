@@ -1,4 +1,4 @@
-async function loadProductsFromAPI() {
+export async function loadProductsFromAPI() {
   try {
     console.log('Fetching MyStore products from API...');
     const response = await fetch('https://dummyjson.com/products?limit=8');
@@ -25,11 +25,11 @@ async function loadProductsFromAPI() {
     });
 
     console.log('Simplified products: ', simplifiedPdtsArray);
+    return simplifiedPdtsArray;
   } catch (error) {
     console.error('ERROR: ', error.message);
+    throw error;
   } finally {
     console.log('Product API request completed');
   }
 }
-
-loadProductsFromAPI();
