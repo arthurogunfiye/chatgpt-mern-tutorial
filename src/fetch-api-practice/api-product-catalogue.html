@@ -9,9 +9,40 @@
   </head>
   <body>
     <h1>MyStore Product Catalogue</h1>
+
+    <!-- SEARCH, SORT AND FILTER CONTROLS -->
+    <section class="catalogue-controls" aria-label="Product controls">
+      <label for="product-search">Search products</label>
+      <input
+        type="search"
+        id="product-search"
+        placeholder="Search by product name..."
+      />
+
+      <label for="sort-products">Sort products</label>
+      <select id="sort-products">
+        <option value="default">Default order</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="a-z">A-Z</option>
+      </select>
+
+      <label for="category-filter">Filter by category</label>
+      <select id="category-filter">
+        <option value="all">All categories</option>
+      </select>
+
+      <label for="stock-filter">
+        <input type="checkbox" id="stock-filter" />
+        Show in-stock products only
+      </label>
+    </section>
+
     <p id="loading-message">Loading products...</p>
     <p id="error-message" hidden>Error loading products!</p>
     <p id="no-products-message" hidden></p>
+
+    <!-- PRODUCT LIST -->
     <section id="product-list"></section>
     <script type="module" src="./api-product-catalogue.js" defer></script>
   </body>

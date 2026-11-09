@@ -40,6 +40,10 @@ h1 {
   margin-top: 0;
 }
 
+.product-category {
+  text-transform: capitalize;
+}
+
 .product-price {
   font-size: 20px;
   font-weight: bold;

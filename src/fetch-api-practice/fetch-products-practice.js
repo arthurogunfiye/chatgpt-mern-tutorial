@@ -19,7 +19,7 @@ export async function loadProductsFromAPI() {
     console.log('Number of products: ', products.length);
 
     const simplifiedPdtsArray = products.map(product => {
-      const { id, title, price, stock, discountPercentage } = product;
+      const { id, title, price, stock, discountPercentage, category } = product;
       const discount =
         typeof discountPercentage === 'number' &&
         Number.isFinite(discountPercentage) &&
@@ -29,6 +29,7 @@ export async function loadProductsFromAPI() {
       return {
         id,
         name: title,
+        category,
         price,
         inStock: stock > 0,
         quantity: stock,
