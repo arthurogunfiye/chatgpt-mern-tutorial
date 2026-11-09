@@ -135,7 +135,7 @@ function updateStockStatus() {
     const available = product.inStock && product.quantity > 0;
 
     button.disabled = !available;
-    button.textContent = available ? 'Add To Cart' : 'Out Of Stock';
+    button.textContent = available ? 'Add To Cart' : 'Unavailable';
     renderProductQuantity(button, product);
   });
 }

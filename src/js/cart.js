@@ -109,7 +109,7 @@ function renderCart() {
     );
 
     increaseItemQtyBtn.addEventListener('click', () =>
-      increaseQuantity(product.id)
+      increaseQuantity(item.productId)
     );
 
     const decreaseItemQtyBtn = document.createElement('button');
@@ -121,7 +121,7 @@ function renderCart() {
     );
 
     decreaseItemQtyBtn.addEventListener('click', () =>
-      decreaseQuantity(product.id)
+      decreaseQuantity(item.productId)
     );
 
     const removeButton = document.createElement('button');
@@ -130,7 +130,7 @@ function renderCart() {
     removeButton.setAttribute('aria-label', `Remove ${product.name} from cart`);
 
     removeButton.addEventListener('click', () => {
-      removeFromCart(product.id);
+      removeFromCart(item.productId);
     });
 
     const saveForLaterButton = document.createElement('button');
@@ -142,7 +142,7 @@ function renderCart() {
     );
 
     saveForLaterButton.addEventListener('click', () =>
-      saveForLater(product.id)
+      saveForLater(item.productId)
     );
 
     row.append(
@@ -442,7 +442,7 @@ function renderSavedItems() {
     moveToCartBtn.textContent = 'Move To Cart';
     moveToCartBtn.disabled = !product.inStock || product.quantity <= 0;
 
-    moveToCartBtn.addEventListener('click', () => moveToCart(product.id));
+    moveToCartBtn.addEventListener('click', () => moveToCart(item.productId));
 
     row.append(productNameEl, productQuantity, moveToCartBtn);
 

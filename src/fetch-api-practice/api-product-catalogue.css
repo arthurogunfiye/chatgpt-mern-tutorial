@@ -1,0 +1,85 @@
+/* 1. Global page styling */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 24px;
+  font-family: Arial, sans-serif;
+  background-color: #f5f7fb;
+  color: #1f2937;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+/* 2. Responsive product layout */
+#product-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 3. Individual product cards */
+.product-card {
+  background-color: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* 4. Product information */
+.product-card h2 {
+  font-size: 18px;
+  margin-top: 0;
+}
+
+.product-price {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2563eb;
+}
+
+/* 5. Availability indicators */
+.in-stock {
+  color: #15803d;
+  font-weight: bold;
+}
+
+.out-of-stock {
+  color: #b91c1c;
+  font-weight: bold;
+}
+
+.sale-badge {
+  display: inline-block;
+  width: fit-content;
+  padding: 6px 12px;
+  background-color: #fef3c7;
+  color: #92400e;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+/* 6. Loading and error messages */
+#loading-message,
+#error-message,
+#no-products-message {
+  text-align: center;
+  padding: 16px;
+}
+
+#error-message {
+  color: #b91c1c;
+}
+
+[hidden] {
+  display: none !important;
+}

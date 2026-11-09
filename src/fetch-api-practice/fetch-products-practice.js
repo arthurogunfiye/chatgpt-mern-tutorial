@@ -1,7 +1,12 @@
 export async function loadProductsFromAPI() {
   try {
     console.log('Fetching MyStore products from API...');
-    const response = await fetch('https://dummyjson.com/products?limit=8');
+    const response = await fetch('https://dummyjson.com/products?limit=10');
+
+    // Added to elicit an empty products array response
+    // const response = await fetch(
+    //   'https://dummyjson.com/products?limit=8&skip=1000'
+    // );
 
     if (!response.ok) {
       throw new Error(`HTTP error: ${response.status}`);
@@ -14,13 +19,21 @@ export async function loadProductsFromAPI() {
     console.log('Number of products: ', products.length);
 
     const simplifiedPdtsArray = products.map(product => {
-      const { id, title, price, stock } = product;
+      const { id, title, price, stock, discountPercentage } = product;
+      const discount =
+        typeof discountPercentage === 'number' &&
+        Number.isFinite(discountPercentage) &&
+        discountPercentage > 0
+          ? discountPercentage
+          : 0;
       return {
         id,
         name: title,
         price,
         inStock: stock > 0,
-        quantity: stock
+        quantity: stock,
+        onSale: discount > 0,
+        discount
       };
     });
 
