@@ -12,30 +12,50 @@
 
     <!-- SEARCH, SORT AND FILTER CONTROLS -->
     <section class="catalogue-controls" aria-label="Product controls">
-      <label for="product-search">Search products</label>
-      <input
-        type="search"
-        id="product-search"
-        placeholder="Search by product name..."
-      />
+      <div class="control-group search-group">
+        <label for="product-search">Search products</label>
+        <input
+          type="search"
+          id="product-search"
+          placeholder="Search by product name..."
+          disabled
+        />
+      </div>
 
-      <label for="sort-products">Sort products</label>
-      <select id="sort-products">
-        <option value="default">Default order</option>
-        <option value="price-low">Price: Low to High</option>
-        <option value="price-high">Price: High to Low</option>
-        <option value="a-z">A-Z</option>
-      </select>
+      <div class="control-group">
+        <label for="sort-products">Sort products</label>
+        <select id="sort-products" disabled>
+          <option value="default">Default order</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="a-z">A-Z</option>
+        </select>
+      </div>
 
-      <label for="category-filter">Filter by category</label>
-      <select id="category-filter">
-        <option value="all">All categories</option>
-      </select>
+      <div class="control-group">
+        <label for="category-filter">Categories</label>
+        <select id="category-filter" disabled>
+          <option value="all">All Categories</option>
+        </select>
+      </div>
 
       <label for="stock-filter">
-        <input type="checkbox" id="stock-filter" />
-        Show in-stock products only
+        <input type="checkbox" id="stock-filter" disabled />
+        In-stock only
       </label>
+
+      <label for="sale-filter">
+        <input type="checkbox" id="sale-filter" disabled />
+        On sale only
+      </label>
+
+      <button type="button" id="reset-filters-btn" disabled>
+        Reset Filters
+      </button>
+
+      <button type="button" id="try-again-btn" hidden>Try Again</button>
+
+      <p id="products-counter" role="status"></p>
     </section>
 
     <p id="loading-message">Loading products...</p>

@@ -13,6 +13,7 @@ export async function loadProductsFromAPI() {
     }
 
     const data = await response.json();
+    console.log(data);
     const products = data.products;
 
     console.log('Products received from API: ', products);

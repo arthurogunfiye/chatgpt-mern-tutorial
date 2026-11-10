@@ -1,5 +1,5 @@
 import { loadProductsFromAPI } from './fetch-products-practice.js';
-import { testProducts } from '../js/test-products.js';
+// import { testProducts } from '../js/test-products.js';
 
 const productList = document.querySelector('#product-list');
 const loadingMessage = document.querySelector('#loading-message');
@@ -8,15 +8,23 @@ const noPdtsMsg = document.querySelector('#no-products-message');
 
 const searchInput = document.querySelector('#product-search');
 const stockFilter = document.querySelector('#stock-filter');
+const saleFilter = document.querySelector('#sale-filter');
 const categoryFilter = document.querySelector('#category-filter');
 const sortSelect = document.querySelector('#sort-products');
+const resetFiltersBtn = document.querySelector('#reset-filters-btn');
+const productsCounter = document.querySelector('#products-counter');
+const tryAgainBtn = document.querySelector('#try-again-btn');
 
 searchInput.addEventListener('input', updateCatalogue);
 stockFilter.addEventListener('change', updateCatalogue);
 sortSelect.addEventListener('change', updateCatalogue);
+saleFilter.addEventListener('change', updateCatalogue);
 categoryFilter.addEventListener('change', updateCatalogue);
+resetFiltersBtn.addEventListener('click', resetFilters);
+tryAgainBtn.addEventListener('click', displayProducts);
 
 let allProducts = [];
+let isLoading = false;
 
 function populateCategories(products) {
   const categories = [...new Set(products.map(product => product.category))];
@@ -50,7 +58,9 @@ function getVisibleProducts() {
 
     const matchesStock = !stockFilter.checked || product.inStock;
 
-    return matchesSearch && matchesCategory && matchesStock;
+    const matchesSale = !saleFilter.checked || product.onSale;
+
+    return matchesSearch && matchesCategory && matchesStock && matchesSale;
   });
 
   if (sortSelect.value === 'price-low') {
@@ -68,8 +78,28 @@ function getVisibleProducts() {
   return visibleProducts;
 }
 
+function resetFilters() {
+  searchInput.value = '';
+  sortSelect.value = 'default';
+  categoryFilter.value = 'all';
+  stockFilter.checked = false;
+  saleFilter.checked = false;
+
+  updateCatalogue();
+  searchInput.focus();
+}
+
 function updateCatalogue() {
   const visibleProducts = getVisibleProducts();
+
+  productsCounter.textContent = `Showing ${visibleProducts.length} of ${allProducts.length} products`;
+
+  if (allProducts.length === 0) {
+    productList.replaceChildren();
+    noPdtsMsg.textContent = 'There are no products available.';
+    noPdtsMsg.hidden = false;
+    return;
+  }
 
   if (visibleProducts.length === 0) {
     productList.replaceChildren();
@@ -124,37 +154,54 @@ function renderProducts(products) {
   });
 }
 
+function setControlsDisabled(isDisabled) {
+  [
+    searchInput,
+    sortSelect,
+    categoryFilter,
+    stockFilter,
+    saleFilter,
+    resetFiltersBtn
+  ].forEach(element => {
+    element.disabled = isDisabled;
+  });
+}
+
 async function displayProducts() {
+  if (isLoading) return;
+
+  setControlsDisabled(true);
   loadingMessage.hidden = false;
   errorMessage.hidden = true;
   noPdtsMsg.hidden = true;
+  tryAgainBtn.hidden = true;
 
   productList.replaceChildren();
 
+  isLoading = true;
+  tryAgainBtn.disabled = true;
+
   try {
-    // Use this for normal API testing:
-    // const products = await loadProductsFromAPI();
+    const products = await loadProductsFromAPI();
 
     // For QA testing with local data, temporarily use:
-    const products = testProducts;
+    // const products = testProducts;
 
     allProducts = products;
 
-    // Populate the dropdown BEFORE checking for an empty array.
+    if (allProducts.length > 0) setControlsDisabled(false);
     populateCategories(allProducts);
-
-    if (allProducts.length === 0) {
-      noPdtsMsg.textContent = 'There are no products available';
-      noPdtsMsg.hidden = false;
-      return;
-    }
-
     updateCatalogue();
   } catch (error) {
     console.error('Unable to load products:', error);
+    allProducts = [];
+    productsCounter.textContent = '';
     errorMessage.hidden = false;
+    tryAgainBtn.hidden = false;
   } finally {
     loadingMessage.hidden = true;
+    isLoading = false;
+    tryAgainBtn.disabled = false;
   }
 }
 

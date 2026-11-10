@@ -2,8 +2,8 @@
 export const testProducts = [
   {
     id: 101,
-    name: 'Test Laptop 1',
-    price: 799,
+    name: 'HP EliteBook 8 G1i Laptop',
+    price: 1713.59,
     category: 'Laptops',
     quantity: 5,
     inStock: true,
@@ -12,8 +12,8 @@ export const testProducts = [
   },
   {
     id: 102,
-    name: 'Test Headphones',
-    price: 99,
+    name: 'Bose QuietComfort Ultra Headphones',
+    price: 449.95,
     category: 'Accessories',
     quantity: 0,
     inStock: false,
@@ -22,7 +22,7 @@ export const testProducts = [
   },
   {
     id: 103,
-    name: 'Test Keyboard',
+    name: 'Toshiba Keyboard',
     price: 39,
     category: 'Accessories',
     quantity: 12,
@@ -32,7 +32,7 @@ export const testProducts = [
   },
   {
     id: 104,
-    name: 'Test Monitor',
+    name: 'Samsung Monitor',
     price: 129,
     category: 'Accessories',
     quantity: 5,
@@ -42,18 +42,18 @@ export const testProducts = [
   },
   {
     id: 105,
-    name: 'Test Phone 3',
-    price: 799,
+    name: 'Apple iPhone 18 Pro',
+    price: 1199,
     category: 'Smartphones',
     quantity: 25,
     inStock: true,
-    onSale: true,
-    discount: 10
+    onSale: false,
+    discount: 0
   },
   {
     id: 106,
-    name: 'Test Laptop 3',
-    price: 799,
+    name: 'Dell Pro 16 Plus Laptop',
+    price: 1975.2,
     category: 'Laptops',
     quantity: 15,
     inStock: true,
@@ -62,18 +62,18 @@ export const testProducts = [
   },
   {
     id: 107,
-    name: 'Test Phone 1',
-    price: 999,
+    name: 'Samsung Galaxy S26 Ultra',
+    price: 1529,
     category: 'Smartphones',
-    quantity: 8,
+    quantity: 15,
     inStock: true,
-    onSale: false,
-    discount: 0
+    onSale: true,
+    discount: 10
   },
   {
     id: 108,
-    name: 'Test Tablet 1',
-    price: 299,
+    name: 'Apple iPad Air',
+    price: 1199,
     category: 'Tablets',
     quantity: 15,
     inStock: true,
@@ -82,8 +82,8 @@ export const testProducts = [
   },
   {
     id: 109,
-    name: 'Test Laptop 2',
-    price: 859,
+    name: 'Acer Aspire 14 AI Laptop',
+    price: 749.99,
     category: 'Laptops',
     quantity: 12,
     inStock: true,
@@ -92,18 +92,18 @@ export const testProducts = [
   },
   {
     id: 110,
-    name: 'Test Phone 2',
-    price: 939,
+    name: 'Huawei Mate XT Phone',
+    price: 1139.59,
     category: 'Smartphones',
     quantity: 8,
     inStock: true,
-    onSale: true,
-    discount: 5
+    onSale: false,
+    discount: 0
   },
   {
     id: 111,
-    name: 'Test Tablet 2',
-    price: 259,
+    name: 'Google Pixel Tablet',
+    price: 599,
     category: 'Tablets',
     quantity: 15,
     inStock: true,
@@ -112,12 +112,32 @@ export const testProducts = [
   },
   {
     id: 112,
-    name: 'Test HDMI Cable',
+    name: 'HDMI Cable',
     price: 3.99,
     category: 'Accessories',
     quantity: 0,
     inStock: false,
-    onSale: false,
-    discount: 0
+    onSale: true,
+    discount: 7
+  },
+  {
+    id: 113,
+    name: 'Samsung Galaxy Tab S12 Ultra',
+    price: 1199,
+    category: 'Tablets',
+    quantity: 0,
+    inStock: false,
+    onSale: true,
+    discount: 8
+  },
+  {
+    id: 114,
+    name: 'Google Pixel 11 Pro',
+    price: 799,
+    category: 'Smartphones',
+    quantity: 0,
+    inStock: false,
+    onSale: true,
+    discount: 15
   }
 ];
