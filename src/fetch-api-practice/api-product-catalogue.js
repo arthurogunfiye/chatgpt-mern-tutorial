@@ -1,5 +1,5 @@
-import { loadProductsFromAPI } from './fetch-products-practice.js';
-// import { fetchTestProducts } from '../js/test-products.js';
+// import { loadProductsFromAPI } from './fetch-products-practice.js';
+import { fetchTestProducts } from '../js/test-products.js';
 
 const productList = document.querySelector('#product-list');
 const loadingMessage = document.querySelector('#loading-message');
@@ -182,14 +182,14 @@ async function displayProducts() {
   tryAgainBtn.disabled = true;
 
   try {
-    const products = await loadProductsFromAPI();
+    // const products = await loadProductsFromAPI();
 
     // For QA testing with local data, temporarily use:
-    // const products = await fetchTestProducts(false);
+    const products = await fetchTestProducts(false);
 
     allProducts = products;
 
-    if (allProducts.length > 0) setControlsDisabled(true);
+    if (allProducts.length > 0) setControlsDisabled(false);
     populateCategories(allProducts);
     updateCatalogue();
   } catch (error) {

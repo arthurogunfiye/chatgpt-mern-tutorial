@@ -150,7 +150,7 @@ export function fetchTestProducts(shouldFail = false) {
     } else {
       setTimeout(() => {
         resolve([...testProducts]);
-      }, 5000);
+      }, 1000);
     }
   });
 }
