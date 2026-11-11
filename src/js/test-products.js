@@ -1,5 +1,6 @@
 // Array added for QA purposes
-export const testProducts = [
+
+const testProducts = [
   {
     id: 101,
     name: 'HP EliteBook 8 G1i Laptop',
@@ -141,3 +142,15 @@ export const testProducts = [
     discount: 15
   }
 ];
+
+export function fetchTestProducts(shouldFail = false) {
+  return new Promise((resolve, reject) => {
+    if (shouldFail) {
+      reject(new Error('Test products unavailable!'));
+    } else {
+      setTimeout(() => {
+        resolve([...testProducts]);
+      }, 5000);
+    }
+  });
+}
