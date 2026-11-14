@@ -236,7 +236,7 @@ describe('productReducer()', () => {
       }
     };
 
-    const nextState = productReducer(previousFilters, action);
+    const nextState = productReducer(previousState, action);
 
     assert.deepEqual(previousFilters, previousFiltersSnapshot);
     assert.ok(nextState.filters.onSaleOnly);
