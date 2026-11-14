@@ -9,6 +9,23 @@ import { fetchTestProducts } from '../js/test-products.js';
 const products = await fetchTestProducts(false);
 const initialStateSnapshot = structuredClone(initialState);
 
+function createState(overrides = {}) {
+  const freshState = structuredClone(initialState);
+
+  return {
+    ...freshState,
+    ...overrides,
+    filters: {
+      ...freshState.filters,
+      ...overrides.filters
+    },
+    status: {
+      ...freshState.status,
+      ...overrides.status
+    }
+  };
+}
+
 const filterActions = [
   {
     type: 'LOAD_SUCCESS',
@@ -39,37 +56,49 @@ const filterActions = [
 
 describe('productReducer()', () => {
   it('SET_FILTER should filter by specified filter', () => {
-    const categoryFilterState = productReducer(initialState, {
+    const previousState = createState();
+
+    const action = {
       type: 'SET_FILTER',
       payload: {
         key: 'category',
         value: 'Laptops'
       }
-    });
+    };
 
-    assert.equal(categoryFilterState.filters.category, 'Laptops');
+    const nextState = productReducer(previousState, action);
+
+    assert.equal(nextState.filters.category, 'Laptops');
   });
 
   it('Should preserve other filters', () => {
-    const categoryFilterState = productReducer(initialState, {
+    const previousState = createState({
+      filters: {
+        searchTerm: 'Samsung',
+        inStockOnly: true
+      }
+    });
+
+    const action = {
       type: 'SET_FILTER',
       payload: {
         key: 'category',
         value: 'Laptops'
       }
-    });
-
-    const expectedFilters = {
-      ...initialState.filters,
-      category: 'Laptops'
     };
 
-    assert.deepEqual(initialStateSnapshot.filters, initialState.filters);
-    assert.deepEqual(categoryFilterState.filters, expectedFilters);
+    const previousFiltersSnapshot = structuredClone(previousState.filters);
+
+    const nextState = productReducer(previousState, action);
+
+    assert.equal(nextState.filters.category, 'Laptops');
+    assert.equal(nextState.filters.searchTerm, 'Samsung');
+    assert.equal(nextState.filters.inStockOnly, true);
+    assert.deepEqual(previousState.filters, previousFiltersSnapshot);
   });
 
   it('RESET_FILTERS should restore filter defaults', () => {
-    const filteredState = filterActions.reduce(productReducer, initialState);
+    const filteredState = filterActions.reduce(productReducer, createState());
 
     const filteredStateSnapshot = structuredClone(filteredState);
 
@@ -84,7 +113,7 @@ describe('productReducer()', () => {
   it('reset should preserve products', () => {
     const resetState = [...filterActions, { type: 'RESET_FILTERS' }].reduce(
       productReducer,
-      initialState
+      createState()
     );
 
     assert.equal(resetState.products.length, 14);
@@ -95,12 +124,21 @@ describe('productReducer()', () => {
   });
 
   it('LOAD_START should set loading and clear error', () => {
-    const loadingState = productReducer(initialState, {
-      type: 'LOAD_START'
+    const previousState = createState({
+      status: {
+        isLoading: false,
+        error: 'Previous network failure'
+      }
     });
 
-    assert.ok(loadingState.status.isLoading);
-    assert.equal(loadingState.status.error, null);
+    const action = {
+      type: 'LOAD_START'
+    };
+
+    const nextState = productReducer(previousState, action);
+
+    assert.ok(nextState.status.isLoading);
+    assert.equal(nextState.status.error, null);
   });
 
   it('LOAD_SUCCESS should store products and clear loading', () => {
@@ -114,7 +152,7 @@ describe('productReducer()', () => {
         type: 'LOAD_SUCCESS',
         payload: products
       }
-    ].reduce(productReducer, initialState);
+    ].reduce(productReducer, createState());
 
     assert.equal(loadedState.products.length, 14);
     assert.deepEqual(
@@ -126,18 +164,18 @@ describe('productReducer()', () => {
   });
 
   it('LOAD_FAILURE should store error and preserve products', () => {
-    const loadingState = productReducer(initialState, {
-      type: 'LOAD_START'
-    });
-
-    const loadedState = productReducer(loadingState, {
+    const loadedState = productReducer(createState(), {
       type: 'LOAD_SUCCESS',
       payload: products
     });
 
+    const loadingState = productReducer(loadedState, {
+      type: 'LOAD_START'
+    });
+
     const errorMsg = 'Network down. Service unavailable.';
 
-    const errorState = productReducer(loadedState, {
+    const errorState = productReducer(loadingState, {
       type: 'LOAD_FAILURE',
       payload: errorMsg
     });
@@ -148,22 +186,60 @@ describe('productReducer()', () => {
   });
 
   it('Unknown action should return original state reference', () => {
-    const unknownAction = productReducer(initialState, {
-      type: 'UNKNOWN_ACTION',
-      payload: {
-        key: 'searchTerm',
-        value: 'Bose'
-      }
-    });
+    const previousState = createState();
 
-    assert.equal(unknownAction, initialState);
+    const action = {
+      type: 'UNKNOWN_ACTION'
+    };
+
+    const nextState = productReducer(previousState, action);
+
+    assert.equal(nextState, previousState);
   });
 
   it('Previous state should remain unchanged', () => {
-    assert.deepEqual(initialState, initialStateSnapshot);
+    const previousState = createState({
+      filters: {
+        category: 'Laptops'
+      }
+    });
+
+    const prevStateSnapshot = structuredClone(previousState);
+
+    const action = {
+      type: 'SET_FILTER',
+      payload: {
+        key: 'category',
+        value: 'Tablets'
+      }
+    };
+
+    const nextState = productReducer(previousState, action);
+
+    assert.deepEqual(previousState, prevStateSnapshot);
+    assert.equal(nextState.filters.category, 'Tablets');
+    assert.notEqual(nextState, previousState);
   });
 
   it('Nested filters should remain unchanged', () => {
-    assert.deepEqual(initialState.filters, initialStateSnapshot.filters);
+    const previousState = createState();
+
+    const previousFilters = previousState.filters;
+
+    const previousFiltersSnapshot = structuredClone(previousFilters);
+
+    const action = {
+      type: 'SET_FILTER',
+      payload: {
+        key: 'onSaleOnly',
+        value: true
+      }
+    };
+
+    const nextState = productReducer(previousFilters, action);
+
+    assert.deepEqual(previousFilters, previousFiltersSnapshot);
+    assert.ok(nextState.filters.onSaleOnly);
+    assert.notEqual(nextState.filters, previousFilters);
   });
 });
