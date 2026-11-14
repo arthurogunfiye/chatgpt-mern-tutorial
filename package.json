@@ -1,0 +1,22 @@
+{
+  "name": "mern-learning",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node --test \"src/**/*.test.js\"",
+    "report": "node --test --test-reporter=spec"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arthurogunfiye/chatgpt-mern-tutorial.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/arthurogunfiye/chatgpt-mern-tutorial/issues"
+  },
+  "homepage": "https://github.com/arthurogunfiye/chatgpt-mern-tutorial#readme"
+}
