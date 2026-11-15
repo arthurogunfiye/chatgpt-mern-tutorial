@@ -112,7 +112,7 @@ describe('selectProducts()', () => {
     assert.equal(result[0].name, 'Bose QuietComfort Ultra Headphones');
   });
 
-  it('Should sort products with price ascending', () => {
+  it('sortBy filter should sort products with price ascending', () => {
     const result = selectProducts(
       products,
       createFilters({
@@ -132,7 +132,7 @@ describe('selectProducts()', () => {
     );
   });
 
-  it('Should sort products with price descending', () => {
+  it('sortBy filter should sort products with price descending', () => {
     const result = selectProducts(
       products,
       createFilters({
@@ -152,7 +152,7 @@ describe('selectProducts()', () => {
     );
   });
 
-  it('Should sort products alphabetically', () => {
+  it('sortBy filter should sort products alphabetically', () => {
     const result = selectProducts(
       products,
       createFilters({
